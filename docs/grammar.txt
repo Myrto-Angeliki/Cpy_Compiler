@@ -1,0 +1,117 @@
+startRule       :   declarations defs 
+                ; 
+ 
+declarations    :   ( '#int' idList )* 
+                ; 
+ 
+idList          :   ID ( ',' ID )*  
+                | 
+                ; 
+ 
+global_variables       :   ( 'global' idList )* 
+                       ; 
+ 
+defs            :   funcdef defs  
+         	|   maindef 
+                ; 
+ 
+funcdef          :   'def' ID '(' idList ')' ':' 
+                    '#{' 
+                        declarations 
+                        (funcdef)* 
+                        global_variables 
+                        statements 
+                    '#}' 
+                ; 
+ 
+maindef         :   '#def' 'main' 
+                        declarations 
+                        statements 
+                ; 
+ 
+statements      :   statement+ 
+                ; 
+ 
+statement       :   simple_statement 
+                |   complex_statement 
+                ; 
+ 
+simple_statement 
+                :   ID assignment_stat 
+                |   print_stat 
+                |   return_stat 
+                ; 
+ 
+ 
+complex_statement 
+                :   ‘if’ if_stat 
+                |   ‘while’ while_stat 
+                ; 
+ 
+assignment_stat :   '='  expression 
+                ; 
+ 
+print_stat      :   'print' '(' expression ')' 
+                ; 
+ 
+return_stat     :   'return' expression 
+                ; 
+ 
+if_stat         :   condition ':' (statement | '#{' statements '#}') 
+		    elifpart 
+     		    elsepart 
+                ; 
+ 
+elifpart        :   ( 'elif' condition ':' (statement | '#{' statements '#}')  )* 
+                ; 
+ 
+elsepart        :   ( 'else' ':' (statement | '#{' statements '#}')  )? 
+                ; 
+ 
+while_stat      :   condition ':' (statement | '#{' statements '#}') 
+          	; 
+ 
+expression      :   optional_sign term ( addOp term )* 
+                ; 
+ 
+term            :   factor ( mulOp factor )* 
+                ; 
+      
+factor          :   NUMBER 
+                |   '(' expression ')' 
+                |   ID idtail 
+                |   user_input 
+                ; 
+ 
+user_input      :   'int' '(' 'input' '(' ')'')' 
+                ; 
+ 
+idtail          :   '(' actual_par_list ')' 
+                | 
+                ; 
+ 
+actual_par_list :   expression ( ',' expression )* 
+                | 
+                ; 
+ 
+condition       :   boolterm ( 'or' boolterm )* 
+                ; 
+ 
+boolterm        :   boolfactor ( 'and' boolfactor )* 
+                ; 
+ 
+boolfactor      :   expression relOp expression 
+                |   'not' expression relOp expression 
+                ; 
+ 
+optional_sign   :   addOp 
+                | 
+                ; 
+ 
+addOp           :   '+' | '-' 
+                ; 
+ 
+mulOp           :   '*' | '//' | '%' 
+                ; 
+ 
+relOp           :   '>' | '<' | '>=' | '<=' | '==' | '!= ;
