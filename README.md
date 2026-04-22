@@ -1,6 +1,11 @@
 # Cpy_Compiler
 A Compiler written in Python that converts a program written in a custom language to RISC-V assembly.<br>
 
+## Acknowledgements
+
+This project implements a compiler for a language designed by Georgios Manis as part of Compilers Course at University of Ioannina.  
+The implementation and grammar are my own work based on course concepts.
+
 ### In /docs 
 there are:
 - images of the **FSM** of the language

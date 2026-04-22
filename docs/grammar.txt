@@ -1,3 +1,7 @@
+// Grammar implementation written by Angeliki Myrto Kokora
+// Based on a language designed by Georgios Manis for course Compilers
+// This is an original implementation, not copied from course materials
+
 startRule       :   declarations defs 
                 ; 
  
